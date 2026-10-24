@@ -1,0 +1,25 @@
+{
+  "name": "Postcodify (PHP 8.5 + MariaDB)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "POSTCODIFY_DB_DBNAME": "postcodify",
+    "POSTCODIFY_DB_USER": "postcodify",
+    "POSTCODIFY_DB_PASS": "yourpassword"
+  },
+  "postStartCommand": "sh .devcontainer/start-db.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/claude-code:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "xdebug.php-debug",
+        "bmewburn.vscode-intelephense-client"
+      ]
+    }
+  }
+}

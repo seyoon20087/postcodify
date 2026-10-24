@@ -168,7 +168,7 @@ class Postcodify_Client
         
         $response = strval(curl_exec($ch));
         $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);        
-        curl_close($ch);
+        // curl_close($ch);
         
         if ($status == 200 && $response !== '' && $response[0] === '{')
         {

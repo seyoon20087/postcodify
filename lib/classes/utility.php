@@ -53,8 +53,9 @@ class Postcodify_Utility
             $pdo_options = array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
             );
+            $init_command = defined('Pdo\Mysql::ATTR_INIT_COMMAND') ? constant('Pdo\Mysql::ATTR_INIT_COMMAND') : PDO::MYSQL_ATTR_INIT_COMMAND;
+            $pdo_options[$init_command] = 'SET NAMES utf8';
         }
         else
         {
@@ -103,7 +104,7 @@ class Postcodify_Utility
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 3);
         
         $result = curl_exec($ch);
-        curl_close($ch);
+        // curl_close($ch);
         if ($target_filename)
         {
             fclose($fp);

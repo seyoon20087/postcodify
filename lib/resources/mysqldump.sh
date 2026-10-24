@@ -6,6 +6,6 @@ MYSQL_PASS=""
 MYSQL_DBNAME=""
 
 mysqldump --opt --order-by-primary \
-    --single-transaction --no-autocommit --skip-tz-utc \
+    --single-transaction --no-autocommit --skip-tz-utc --no-tablespaces \
     -h$MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASS \
     $MYSQL_DBNAME | gzip > dump.sql.gz

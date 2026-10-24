@@ -199,6 +199,10 @@ class Postcodify_Indexer_Update
                 
                 if (++$count % 32 === 0) Postcodify_Utility::print_progress($count);
                 
+                // 변경일자가 누락된 경우 업데이트 파일의 날짜를 사용한다.
+                
+                if ($entry->updated === null) $entry->updated = $file_date;
+                
                 // 폐지된 도로는 무시한다.
                 
                 if ($entry->change_reason === 1)
@@ -290,6 +294,10 @@ class Postcodify_Indexer_Update
                 $entry = $zip->read_line();
                 if ($is_first_entry && $entry === false) break;
                 $is_first_entry = false;
+                
+                // 변경일자가 누락된 경우 업데이트 파일의 날짜를 사용한다.
+                
+                if ($entry !== false && $entry->updated === null) $entry->updated = $file_date;
                 
                 // 이전 주소가 없다면 방금 읽어온 줄을 이전 주소로 설정한다.
                 
@@ -465,6 +473,7 @@ class Postcodify_Indexer_Update
                         }
                         
                         $other_addresses = implode('; ', $other_addresses);
+                        $other_addresses = iconv('UTF-8', 'UTF-8//IGNORE', $other_addresses);
                         if ($other_addresses === '') $other_addresses = null;
                         
                         // 공동주택인데 공동주택명이 없는 경우 다른 건물명을 이용한다.

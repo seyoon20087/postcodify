@@ -113,6 +113,7 @@ class Postcodify_Parser_NewAddress extends Postcodify_ZipReader
         $previous_address = $line[24] === '' ? null : trim($line[24]);
         $change_reason = $line[22] === '' ? null : intval($line[22]);
         $updated = trim($line[23]);
+        if ($updated === '') $updated = null;
         
         // 데이터를 정리하여 반환한다.
         

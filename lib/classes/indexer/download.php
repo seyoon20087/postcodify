@@ -23,8 +23,8 @@ class Postcodify_Indexer_Download
 {
     // 상수 선언 부분.
     
-    const RELATIVE_DOMAIN = 'http://www.juso.go.kr';
-    const DOWNLOAD_URL = '/dn.do?reqType=ALLRDNM&regYmd=%1$04d&ctprvnCd=00&gubun=RDNM&stdde=%1$04d%2$02d&fileName=%1$04d%2$02d_%%EA%%B1%%B4%%EB%%AC%%BCDB_%%EC%%A0%%84%%EC%%B2%%B4%%EB%%B6%%84.zip&realFileName=%1$04d%2$02dALLRDNM00.zip&indutyCd=999&purpsCd=999&indutyRm=%%EC%%88%%98%%EC%%A7%%91%%EC%%A2%%85%%EB%%A3%%8C&purpsRm=%%EC%%88%%98%%EC%%A7%%91%%EC%%A2%%85%%EB%%A3%%8C';
+    const RELATIVE_DOMAIN = 'https://business.juso.go.kr';
+    const DOWNLOAD_URL = '/api/jst/download?regYmd=%1$04d&reqType=ALLRDNM&ctprvnCd=00&stdde=%1$04d%2$02d&fileName=%1$04d%2$02d_%%EA%%B1%%B4%%EB%%AC%%BCDB_%%EC%%A0%%84%%EC%%B2%%B4%%EB%%B6%%84.zip&realFileName=%1$04d%2$02dALLRDNM00.zip&intFileNo=0&intNum=0';
     const POBOX_URL = 'http://www.epost.go.kr/search/areacd/areacd_pobox_DB.zip';
     const RANGES_URL = 'http://www.epost.go.kr/search/areacd/areacd_rangeaddr_DB.zip';
     const OLDADDR_ZIPCODE_URL = 'http://cdn.poesis.kr/archives/oldaddr_zipcode_DB.zip';

@@ -53,6 +53,7 @@ class Postcodify_Parser_Road_List extends Postcodify_ZipReader
         $previous_road_id = $line[14] === '' ? null : trim($line[14]);
         $change_reason = $line[13] === '' ? null : intval($line[13]);
         $updated = trim($line[18]);
+        if ($updated === '') $updated = null;
         
         // 동 정보는 여기서 기억할 필요가 없다.
         
