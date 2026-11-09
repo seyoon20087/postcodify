@@ -48,34 +48,44 @@ class Postcodify_Indexer_Download
             exit(2);
         }
         
-        // 데이터가 존재하는 가장 최근 년월을 찾는다.
+        // 데이터가 존재하는 가장 최근 년월의 주소 데이터를 다운로드한다. (전월 → 전전월 순으로 시도)
+
+        $downloaded = false;
+        $filepath = '';
+        for ($months_ago = 1; $months_ago <= 2 && !$downloaded; $months_ago++)
+        {
+            $base = mktime(12, 0, 0, intval(date('n')) - $months_ago, 1, intval(date('Y')));
+            $data_year = intval(date('Y', $base));
+            $data_month = intval(date('n', $base));
+            $data_day = intval(date('t', $base));
+
+            Postcodify_Utility::print_message('데이터 기준일은 ' . $data_year . '년 ' . $data_month . '월 ' . $data_day . '일입니다.');
         
-        $current_day = intval(date('d'));
-        $data_year = intval(date('Y', time() - (86400 * ($current_day > 15 ? 35 : 50))));
-        $data_month = intval(date('m', time() - (86400 * ($current_day > 15 ? 35 : 50))));
-        $data_day = intval(date('t', mktime(12, 0, 0, $data_month, 1, $data_year)));
-        
-        Postcodify_Utility::print_message('데이터 기준일은 ' . $data_year . '년 ' . $data_month . '월 ' . $data_day . '일입니다.');
-        
-        // 주소 데이터를 다운로드한다.
-        
-        $download_url = self::RELATIVE_DOMAIN . sprintf(self::DOWNLOAD_URL, $data_year, $data_month);
-        $filename = sprintf('%04d%02d%s.zip', $data_year, $data_month, 'ALLRDNM');
-        $filepath = $download_path . '/' . $filename;
-        
-        Postcodify_Utility::print_message('다운로드: ' . $filename);
-        $result = Postcodify_Utility::download($download_url, $filepath, array(__CLASS__, 'progress'));
-        if (!$result || !file_exists($filepath) || filesize($filepath) < 1024)
+            // 주소 데이터를 다운로드한다.
+
+            $download_url = self::RELATIVE_DOMAIN . sprintf(self::DOWNLOAD_URL, $data_year, $data_month);
+            $filename = sprintf('%04d%02d%s.zip', $data_year, $data_month, 'ALLRDNM');
+            $filepath = $download_path . '/' . $filename;
+
+            Postcodify_Utility::print_message('다운로드: ' . $filename);
+            $result = Postcodify_Utility::download($download_url, $filepath, array(__CLASS__, 'progress'));
+            $downloaded = $result && file_exists($filepath) && filesize($filepath) >= 1024;
+
+            if (!$downloaded && file_exists($filepath))
+            {
+                @unlink($filepath);
+            }
+        }
+
+        if (!$downloaded)
         {
             Postcodify_Utility::print_error();
             exit(2);
         }
-        else
-        {
-            Postcodify_Utility::print_ok(filesize($filepath));
-            $downloaded_files++;
-        }
-        
+
+        Postcodify_Utility::print_ok(filesize($filepath));
+        $downloaded_files++;
+
         // 우체국 사서함 파일을 다운로드한다.
         
         Postcodify_Utility::print_message('다운로드: ' . basename(self::POBOX_URL));
