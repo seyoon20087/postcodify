@@ -3,7 +3,7 @@
 ## 프로그램 다운로드
 
 ```sh
-git clone https://github.com/kijin/postcodify.git
+git clone https://github.com/seyoon20087/postcodify.git
 ```
 
 ## DB 구축 방법
