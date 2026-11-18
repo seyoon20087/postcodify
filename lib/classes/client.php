@@ -141,7 +141,7 @@ class Postcodify_Client
         
         // 백업서버 접속 정보를 정리한다.
         
-        $config['timeout'] = isset($this->config['backup_timeout']) ? $this->config['backup_timeout'] : self::MAIN_TIMEOUT;
+        $config['timeout'] = isset($this->config['backup_timeout']) ? $this->config['backup_timeout'] : self::BACKUP_TIMEOUT;
         $config['url'] = $this->config['backup_url'];
         
         // 백업서버에서 검색을 시도한다.
@@ -161,7 +161,7 @@ class Postcodify_Client
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $config['url'] . '?' . $config['params'],
-            CURLOPT_CONNECTTIMEOUT => $config['timeout'],
+            CURLOPT_CONNECTTIMEOUT_MS => $config['timeout'],
             CURLOPT_USERAGENT => $config['user_agent'],
             CURLOPT_RETURNTRANSFER => 1,
         ));

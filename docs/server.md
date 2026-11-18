@@ -307,10 +307,3 @@ if ($result && $result->error === '')
 |---|---|---|
 | [emulators/xe.php](../lib/emulators/xe.php) | XE의 KRZIP 모듈 | `request=addr1`(시도 목록), `request=addr2`, `search_addr1`, `search_word` |
 | [emulators/sir.php](../lib/emulators/sir.php) | 그누보드(SIR) 우편번호 검색 | `q`, `sido`, `gugun`, `charset`(euc-kr 지원) |
-
-## 알려진 문제
-
-코드를 분석하면서 발견한 문제입니다. (아직 고치지 않았습니다.)
-
-- `Postcodify_Client`: `set_timeout()`은 밀리초를 받지만 cURL의 `CURLOPT_CONNECTTIMEOUT`(초 단위)에 그대로 넣습니다. 기본값 1000은 1000초가 됩니다.
-  또 백업 서버의 기본 제한시간으로 `BACKUP_TIMEOUT`이 아닌 `MAIN_TIMEOUT`을 씁니다.
