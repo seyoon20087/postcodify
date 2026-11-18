@@ -1,8 +1,17 @@
 # 서버측 클래스 매뉴얼
 
 검색 API(`lib/search.php`)의 구조와, 자체 PHP 프로그램에서 Postcodify 검색 기능을 직접 호출하는 방법입니다.
-원래 poesis.dev의 "서버측 클래스 매뉴얼" 페이지에 있던 내용이지만 원본을 구할 수 없어,
-현재 `lib/` 코드(버전 3.5.1)를 분석하여 새로 작성했습니다.
+원본은 [poesis.dev 매뉴얼](https://web.archive.org/web/20241205121717/https://www.poesis.dev/postcodify/guide/owndb_class)이며,
+현재 `lib/` 코드(버전 3.5.1)를 분석하여 내용을 고치고 보충했습니다.
+
+## 개요
+
+직접 검색서버를 구축했다면 jQuery 플러그인 없이도 쉘이나 PHP 클래스로 검색하고 그 결과를 다른 프로그램과 연동할 수 있습니다.
+먼저 MySQL 또는 SQLite DB를 [구축](owndb.md)한 후, `lib/config.example.php`를 `lib/config.php`로 복사하여 DB 접속 정보를 입력하십시오.
+
+- PHP와 `mbstring` 모듈, MySQL(또는 MariaDB) 또는 SQLite 3이 필요합니다.
+- MySQL은 PDO, mysqli, mysql 모듈 중 사용 가능한 것을 자동으로 고릅니다.
+- SQLite는 PDO(`pdo_sqlite`)만 지원합니다. `sqlite`, `sqlite3` 모듈은 지원하지 않습니다.
 
 ## 구성
 
@@ -36,11 +45,47 @@
 GET /lib/search.php?q=세종대로+110&callback=cb
 ```
 
-터미널에서도 실행할 수 있으며, 이 경우 보기 좋게 정렬된 JSON을 출력합니다.
+### 쉘에서 호출
 
-```sh
-php lib/search.php "세종대로 110"
+`search.php`를 쉘에서 실행하면 줄바꿈과 들여쓰기를 한 JSON을 출력합니다.
+쉘 명령을 실행하고 JSON을 해석할 수 있다면 Python, Java, Node.js 등 어떤 언어로 작성한 프로그램에서도 쓸 수 있습니다.
+
 ```
+$ php lib/search.php "세종대로 110"
+{
+    "version": "3.0.0",
+    "error": "",
+    "msg": "",
+    "count": 1,
+    "time": "0.009",
+    "lang": "KO",
+    "sort": "JUSO",
+    "type": "JUSO+NUMS",
+    "nums": "110",
+    "cache": "MISS",
+    "results": [
+        {
+            "postcode6": "100744",
+            "postcode5": "04524",
+            "ko_common": "서울특별시 중구",
+            "ko_doro": "세종대로 110",
+            "ko_jibeon": "태평로1가 31",
+            "en_common": "Jung-gu, Seoul",
+            "en_doro": "110, Sejong-daero",
+            "en_jibeon": "31, Taepyeongno 1-ga",
+            "building_id": "1114010300100310000019224",
+            "building_name": "",
+            "building_nums": "",
+            "other_addresses": "명동; 서울시청; 서울특별시청; 신관동",
+            "road_id": "111402005001",
+            "internal_id": "221655"
+        }
+    ]
+}
+```
+
+위 출력은 원본 매뉴얼(3.0.0)의 예시입니다. 현재 버전은 레코드에 `address_id`가 추가되어 있고,
+`--add-old-postcodes` 없이 만든 DB에서는 `postcode6`이 비어 있을 수 있습니다.
 
 ## 직접 호출하기
 
@@ -68,6 +113,15 @@ if ($result->error === '')
 
 `autoload.php`는 `lib/config.php`를 반드시 불러오므로, 설정 파일이 있어야 합니다.
 `search.php`처럼 `POSTCODIFY_DB_*` 상수를 그대로 속성에 넣어 써도 됩니다.
+SQLite를 쓸 때는 `db_dbname`에 파일 경로를 넣고 호스트·포트·아이디·암호는 비워 두십시오.
+
+EUC-KR(CP949) 환경에서는 문자셋을 지정합니다. 결과도 같은 문자셋으로 반환됩니다.
+
+```php
+$result = $server->search('세종대로 110', 'CP949');
+```
+
+> 원본 매뉴얼의 `Postcodify::dbconfig(...)` 호출은 현재 코드에 없습니다. 위처럼 속성으로 설정하십시오.
 
 ### Postcodify_Server
 
