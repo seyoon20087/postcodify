@@ -95,11 +95,11 @@ if (!isset($result) || !is_object($result))
 
 if ($result->error)
 {
-    $json = array('result' => false, 'msg' => "검색 서버와 통신 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주시기 바랍니다.\n\n" + $result->error);
+    $json = array('result' => false, 'msg' => "검색 서버와 통신 중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주시기 바랍니다.\n\n" . $result->error);
 }
 elseif (!count($result->results))
 {
-    $json = array('result' => false, 'msg' => "검색 결과가 없습니다. 정확한 도로명주소 또는 지번주소로 검색해 주시기 바랍니다.\n\n" + $result->error);
+    $json = array('result' => false, 'msg' => "검색 결과가 없습니다. 정확한 도로명주소 또는 지번주소로 검색해 주시기 바랍니다.");
 }
 else
 {
