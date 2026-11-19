@@ -53,11 +53,11 @@ GET /lib/search.php?q=세종대로+110&callback=cb
 ```
 $ php lib/search.php "세종대로 110"
 {
-    "version": "3.0.0",
+    "version": "3.5.1",
     "error": "",
     "msg": "",
     "count": 1,
-    "time": "0.009",
+    "time": "1.722",
     "lang": "KO",
     "sort": "JUSO",
     "type": "JUSO+NUMS",
@@ -65,27 +65,25 @@ $ php lib/search.php "세종대로 110"
     "cache": "MISS",
     "results": [
         {
-            "postcode6": "100744",
             "postcode5": "04524",
+            "postcode6": "100744",
             "ko_common": "서울특별시 중구",
             "ko_doro": "세종대로 110",
             "ko_jibeon": "태평로1가 31",
             "en_common": "Jung-gu, Seoul",
             "en_doro": "110, Sejong-daero",
             "en_jibeon": "31, Taepyeongno 1-ga",
+            "address_id": "1114010300100310000",
             "building_id": "1114010300100310000019224",
             "building_name": "",
             "building_nums": "",
-            "other_addresses": "명동; 서울시청; 서울특별시청; 신관동",
+            "other_addresses": "명동; 서울특별시청; 신관",
             "road_id": "111402005001",
-            "internal_id": "221655"
+            "internal_id": "206800"
         }
     ]
 }
 ```
-
-위 출력은 원본 매뉴얼(3.0.0)의 예시입니다. 현재 버전은 레코드에 `address_id`가 추가되어 있고,
-`--add-old-postcodes` 없이 만든 DB에서는 `postcode6`이 비어 있을 수 있습니다.
 
 ## 직접 호출하기
 
